@@ -1,8 +1,10 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ShieldCheck, Lock, Layout, Server, Cpu, Globe } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ShieldCheck, Lock, Layout, Server, Cpu, Globe, X, Rocket, Zap, Heart } from 'lucide-react';
 
 const About = () => {
+    const [isBioOpen, setIsBioOpen] = useState(false);
+
     const highlights = [
         {
             icon: <Server size={24} className="text-white" />,
@@ -75,22 +77,91 @@ const About = () => {
                                 Meets <span className="text-outline">Precision.</span>
                             </h3>
 
-                            <div className="space-y-6 mb-10">
-                                {/* <p className="text-xl text-white font-bold tracking-tight">
-                                    I am a <span className="text-primary italic">Full-Stack Architect</span> dedicated to pushing the boundaries of web application complexity.
-                                </p> */}
+                            <div className="space-y-6 mb-10 text-left">
                                 <p className="text-text-secondary font-bold leading-relaxed">
-                                   <span className="text-primary">Full-Stack Architect ( <b>MERN</b>  )</span> with a passion for building scalable, high-performance web applications that seamlessly blend clean, modern design with robust functionality. My expertise lies in integrating advanced AI into coding, leveraging cutting-edge AI tools, and utilizing Vibe coding techniques to create intelligent, next-generation features. I focus on writing code that is not only efficient and maintainable but also designed to adapt and grow with the evolving demands of modern web ecosystems. Beyond development, I am deeply committed to innovation, constantly exploring new technologies and approaches to ensure that every solution I deliver is both practical and forward-thinking. My goal is to bridge the gap between technology and creativity, producing applications that are as impactful as they are elegant, and empowering businesses and users to achieve more through intelligent digital solutions.
+                                    <span className="text-primary">Full-Stack Architect ( <b>MERN</b> )</span> with a passion for building scalable, high-performance web applications that seamlessly blend clean, modern design with robust functionality. My expertise lies in integrating advanced AI into coding, leveraging cutting-edge AI tools, and utilizing Vibe coding techniques to create intelligent, next-generation features. My mission is to build scalable, high-performance, and intelligent digital products that not only meet current needs but are also ready for the challenges of tomorrow.
                                 </p>
-                            </div>
 
-                           
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={() => setIsBioOpen(true)}
+                                    className="px-8 py-4 bg-white/5 border border-white/10 rounded-2xl text-white font-black uppercase tracking-[0.2em] text-xs hover:bg-primary transition-all shadow-2xl"
+                                >
+                                    Read Full Bio
+                                </motion.button>
+                            </div>
                         </motion.div>
                     </div>
                 </div>
             </div>
+
+            {/* Bio Modal */}
+            <AnimatePresence>
+                {isBioOpen && (
+                    <div className="fixed inset-0 z-[200] flex items-center justify-center px-6">
+                        {/* Backdrop */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsBioOpen(false)}
+                            className="absolute inset-0 bg-secondary/80 backdrop-blur-md"
+                        />
+
+                        {/* Modal Content */}
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            className="relative glass-dark max-w-3xl w-full max-h-[85vh] overflow-y-auto rounded-[50px] border border-primary/20 p-10 md:p-16 shadow-[0_0_100px_rgba(168,85,247,0.15)] no-scrollbar"
+                        >
+                            <button
+                                onClick={() => setIsBioOpen(false)}
+                                className="absolute top-8 right-8 p-3 bg-white/5 hover:bg-red-500/20 text-text-secondary hover:text-red-500 rounded-2xl transition-all"
+                            >
+                                <X size={24} />
+                            </button>
+
+                            <div className="space-y-10 text-left">
+                                <div className="flex items-center gap-4 text-primary">
+                                    <Rocket size={32} />
+                                    <h4 className="text-3xl font-black text-white tracking-tighter">Full Professional Bio</h4>
+                                </div>
+
+                                <div className="space-y-8 text-lg font-bold text-text-secondary leading-relaxed">
+                                    <p>
+                                        I am a dedicated Full-Stack Architect with deep specialization in the MERN stack (MongoDB, Express.js, React, Node.js). Currently, I am an undergraduate student, continuously building my technical foundation while gaining practical, real-world development experience. My journey in software engineering is driven by a strong passion for creating impactful digital solutions and a commitment to long-term growth in the tech industry.
+                                    </p>
+
+                                    <p>
+                                        I focus on writing code that is not only efficient and maintainable but also scalable and future-ready. From implementing secure systems like JWT authentication and role-based access control (RBAC) to optimizing database performance with advanced MongoDB techniques and deploying applications on modern platforms like Vercel, I aim to deliver complete, high-quality full-stack solutions with a precision-first mindset.
+                                    </p>
+
+                                    <p>
+                                        Beyond traditional web development, I am actively expanding my skill set toward AI and automation. I am exploring how intelligent systems, APIs, and modern AI tools can be integrated into web applications to create smarter, more efficient, and user-focused digital experiences. My goal is to combine full-stack development with AI-driven automation to stay aligned with the future of technology.
+                                    </p>
+                                    <p>
+                                        I am deeply committed to continuous learning, innovation, and problem-solving. My mission is to build scalable, high-performance, and intelligent digital products that not only meet current needs but are also ready for the challenges of tomorrow.
+                                    </p>
+                                </div>
+
+                                <div className="pt-10 border-t border-white/5 flex flex-wrap gap-4">
+                                    {['Optimization', 'Architecture', 'Security', 'Scalability', 'Intelligence'].map((keyword) => (
+                                        <span key={keyword} className="px-4 py-2 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/20">
+                                            {keyword}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </section>
     );
 };
 
 export default About;
+
+

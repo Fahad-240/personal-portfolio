@@ -1,8 +1,38 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter, CheckCircle2, XCircle, X } from 'lucide-react';
+import emailjs from "emailjs-com";
 
 const Contact = () => {
+    const [status, setStatus] = useState(null); // 'success', 'error', or null
+
+    useEffect(() => {
+        if (status) {
+            const timer = setTimeout(() => setStatus(null), 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [status]);
+
+    const sendEmail = (e) => {
+        e.preventDefault();
+
+        emailjs
+            .sendForm(
+                "service_uffqsyb",
+                "template_6uvjthl",
+                e.target,
+                "kyL6z3tZfVpk-2MkZ"
+            )
+            .then(
+                () => {
+                    setStatus("success");
+                    e.target.reset();
+                },
+                () => {
+                    setStatus("error");
+                }
+            );
+    };
     return (
         <section id="contact" className="py-32 bg-secondary relative overflow-hidden">
             {/* Ambient Background Glows */}
@@ -67,24 +97,24 @@ const Contact = () => {
                         transition={{ duration: 0.6 }}
                         className="glass-dark p-12 rounded-[50px] border border-white/5 relative"
                     >
-                        <form className="space-y-8">
+                        <form onSubmit={sendEmail} className="space-y-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
                                 <div className="space-y-3">
                                     <label className="text-[10px] font-black text-text-secondary uppercase tracking-[0.2em] ml-2">Your Name</label>
-                                    <input type="text" className="w-full px-8 py-5 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-black text-white placeholder:text-gray-600" placeholder="Agent Smith" />
+                                    <input type="text" name="name" className="w-full px-8 py-5 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-black text-white placeholder:text-gray-600" placeholder="Agent Smith" />
                                 </div>
                                 <div className="space-y-3 text-left">
                                     <label className="text-[10px] font-black text-text-secondary uppercase tracking-[0.2em] ml-2">Email Address</label>
-                                    <input type="email" className="w-full px-8 py-5 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-black text-white placeholder:text-gray-600" placeholder="smith@matrix.com" />
+                                    <input type="email" name="email" className="w-full px-8 py-5 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-black text-white placeholder:text-gray-600" placeholder="smith@matrix.com" />
                                 </div>
                             </div>
                             <div className="space-y-3 text-left">
                                 <label className="text-[10px] font-black text-text-secondary uppercase tracking-[0.2em] ml-2">Message Subject</label>
-                                <input type="text" className="w-full px-8 py-5 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-black text-white placeholder:text-gray-600" placeholder="Project Discussion" />
+                                <input type="text" name="subject" className="w-full px-8 py-5 rounded-2xl bg-white/5 border border-white/5 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-black text-white placeholder:text-gray-600" placeholder="Project Discussion" />
                             </div>
                             <div className="space-y-3 text-left">
                                 <label className="text-[10px] font-black text-text-secondary uppercase tracking-[0.2em] ml-2">Your Message</label>
-                                <textarea rows="4" className="w-full px-8 py-5 rounded-[30px] bg-white/5 border border-white/5 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-black text-white placeholder:text-gray-600 resize-none" placeholder="Initialization complete. Send parameters..."></textarea>
+                                <textarea rows="4" name="message" className="w-full px-8 py-5 rounded-[30px] bg-white/5 border border-white/5 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none font-black text-white placeholder:text-gray-600 resize-none" placeholder="Initialization complete. Send parameters..."></textarea>
                             </div>
                             <motion.button
                                 whileHover={{ scale: 1.02 }}
@@ -97,6 +127,41 @@ const Contact = () => {
                     </motion.div>
                 </div>
             </div>
+            {/* Status Popup */}
+            <AnimatePresence>
+                {status && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                        className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-md"
+                    >
+                        <div className={`glass-dark px-8 py-6 rounded-[30px] border-2 ${status === 'success' ? 'border-primary/50 shadow-[0_0_30px_rgba(168,85,247,0.3)]' : 'border-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.3)]'} flex items-center gap-6 backdrop-blur-2xl`}>
+                            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${status === 'success' ? 'bg-primary/20 text-primary' : 'bg-red-500/20 text-red-500'}`}>
+                                {status === 'success' ? (
+                                    <CheckCircle2 size={28} />
+                                ) : (
+                                    <XCircle size={28} />
+                                )}
+                            </div>
+                            <div className="flex-1 text-left">
+                                <h4 className="text-white font-black uppercase tracking-[0.15em] text-[10px] mb-1">
+                                    {status === 'success' ? 'Transmission Successful' : 'Transmission Failed'}
+                                </h4>
+                                <p className="text-text-secondary text-sm font-bold leading-tight">
+                                    {status === 'success' ? 'Your message has been encrypted and sent.' : 'Data packet corrupted. Please resend.'}
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => setStatus(null)}
+                                className="p-2 hover:bg-white/10 rounded-xl transition-all text-text-secondary hover:text-white"
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     );
 };

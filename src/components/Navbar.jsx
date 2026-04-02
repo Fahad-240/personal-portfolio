@@ -64,13 +64,15 @@ const Navbar = () => {
                         </a>
                     </div>
 
-                    <motion.button
+                    <motion.a
+                        href="/Fahad Ahmed (2) (1) (1).pdf"
+                        download="Fahad_Ahmed_CV.pdf"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="bg-primary text-white text-[10px] font-black uppercase tracking-[0.2em] px-5 py-2 rounded-full shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all"
+                        className="bg-primary text-white text-[10px] font-black uppercase tracking-[0.2em] px-5 py-2 rounded-full shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all cursor-pointer inline-flex items-center justify-center decoration-none"
                     >
-                        Hire Me
-                    </motion.button>
+                        Download CV
+                    </motion.a>
 
                     {/* Mobile Toggle */}
                     <button
@@ -96,6 +98,16 @@ const Navbar = () => {
                                 {link.name}
                             </a>
                         ))}
+                        <motion.a
+                            href="/Fahad Ahmed (2) (1) (1).pdf"
+                            download="Fahad_Ahmed_CV.pdf"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="mt-4 bg-primary text-white text-sm font-black uppercase tracking-[0.2em] px-10 py-4 rounded-full shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all inline-flex items-center justify-center decoration-none"
+                        >
+                            Hire Me
+                        </motion.a>
                     </div>
                 </div>
             )}
